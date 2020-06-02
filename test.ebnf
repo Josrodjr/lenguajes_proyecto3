@@ -1,0 +1,5 @@
+Expr    = Term { ( "+" | "-" ) Term } { "!" } .
+Term    = Factor { ( "*"|"/"|"%"|"^") Factor } .
+Factor  = Number | Name | "(" ["-"] Expr ")" .
+Name    = Letter { Letter|Digit } .
+Number  = Digit { Digit } [ "." Digit { Digit } ] .
