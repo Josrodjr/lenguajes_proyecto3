@@ -46,7 +46,7 @@ Factor<ref result> =		(.sign=1.)
 	["-"						(.sign = -1.)
 	]
 	(Number<ref result>
-	 |"("Expression<ref result>")"
+	 |Expression<ref result>
 	)							(.result*=sign.)
 	.
 

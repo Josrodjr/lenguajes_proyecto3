@@ -35,6 +35,8 @@ fragment_grammar = mod.fragment_productions(productions_array)
 # start the header
 prt.print_parser_header("Aritmetica.ATG")
 
+mod.first(fragment_grammar)
+
 for obj in fragment_grammar:
     # print("\n", obj)
     

@@ -217,3 +217,100 @@ def fragment_productions(productions_array):
         whole_productions_parsed.append(produc_parsed)
     
     return whole_productions_parsed
+
+
+
+def first(grammar_arr):
+    # do a copy for operations
+    gmr = copy.deepcopy(grammar_arr)
+    # ok we have the grammar parsed and ordered bottom up in the array
+    first = []
+    # the composition of the first and follow will be as follows
+    grammar_obj = {
+        'NAME': '',
+        'FIRST': set(),
+        'FOLLOW': set()
+    }
+    # FIRST OPERATION REMOVE ALL THE RAW PYTHON CODE
+    for obj in gmr:
+        remove = []
+        for index in range(len(obj['fragments'])):
+            if obj['fragments'][index]['type'] == 'python':
+                remove.append(index)
+        # iterate over the index backwards
+        for item in remove[::-1]:
+            obj['fragments'].pop(item)
+        # empty remove
+        remove = []
+
+    # they come here ordered
+    for obj in gmr:
+        # add the name
+        grammar_obj['NAME'] = obj['name']
+        
+        # add it to the array
+        first.append(grammar_obj)
+        # reset the values
+        grammar_obj = {
+            'NAME': '',
+            'FIRST': set(),
+            'FOLLOW': set()
+        }
+
+    # get all the non terminals for later
+    n_t = []
+    for j in range(len(first)):
+        n_t.append(first[j]['NAME'])
+   
+    
+    # iterate over the array of grammar now adding the first data
+    for obj in gmr:
+        current_production = obj['name']
+
+        # iterate over the possible symbols of grammar
+        for fragment in obj['fragments']:
+            # the ez part terminals without <{( in values
+            if not '<' in fragment['text'] and fragment['type'] == 'terminals':
+                # remove the first and last parenthesis
+                terminals = fragment['text'][1:-1]
+                # do a subdivision via | for all the terminals
+                terminals = terminals.split('|')
+                # for each one of the terminals do
+                for each_terminal in terminals:
+                    # append to the first of the current production
+                    for index in range(len(first)):
+                        if first[index]['NAME'] == current_production:
+                            first[index]['FIRST'].add(each_terminal.strip())
+            
+            if '<' in fragment['text'] and fragment['type'] == 'terminals':
+                # remove the first and last parenthesis
+                terminals = fragment['text'][1:-1]
+                # do a subdivision via | for all the terminals
+                terminals = terminals.split('|')
+                # now we must clean each one of the terminals based on the < value
+                for poss_terminal in terminals:
+                    # split by the < symbol
+                    a = poss_terminal.split('<')
+                    # only care about the first part of the split
+                    a = a[0].strip()
+                    # figure out if its a production or a terminal
+                    if a in n_t:
+                        # iterate over all fists and make union
+                        for index in range(len(first)):
+                            if first[index]['NAME'] == current_production:
+                                # search for non terminal first
+                                for j in range(len(first)):
+                                    if first[j]['NAME'] == a:
+                                        f_value = first[j]['FIRST']
+
+                                # union of the first of the nonterminal with the currentproduction set
+                                first[index]['FIRST'] = first[index]['FIRST'].union(f_value)
+                    else:
+                        # not a nonterminal so we only add it to the set
+                        for index in range(len(first)):
+                            if first[index]['NAME'] == current_production:
+                                first[index]['FIRST'].add(a.strip())
+            
+
+    print(first)
+
