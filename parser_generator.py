@@ -24,26 +24,20 @@ input_file= open("input_python/" + INPUT_FILE, "r")
 
 productions = mod.get_productions_str(input_file)
 
-# print(productions)
-
 productions_array = mod.parse_productions(productions)
+
 
 productions_array = mod.filter_right(productions_array)
 
 fragment_grammar = mod.fragment_productions(productions_array)   
 
 # start the header
-prt.print_parser_header("Aritmetica.ATG")
+prt.print_parser_header(INPUT_FILE[:-4]+"_parser")
 
-mod.first(fragment_grammar)
 
 for obj in fragment_grammar:
     # print("\n", obj)
-    
     # call the method for function creation in the parser
-    prt.print_parser_method("Aritmetica.ATG", obj)     
+    prt.print_parser_method(INPUT_FILE[:-4]+"_parser", obj)     
 
-
-# prt.print_parser_header("Aritmetica.ATG")
-# prt.print_parser_method("Aritmetica.ATG","Expr")
-# prt.test_method("Aritmetica.ATG","Expr")
+# mod.first(fragment_grammar)

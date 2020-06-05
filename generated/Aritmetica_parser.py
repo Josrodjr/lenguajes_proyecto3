@@ -1,4 +1,6 @@
-#parser for Aritmetica.ATG grammar
+#parser for Aritmetica_parser grammar
+
+import scanner
 
 class Parser:
 
@@ -8,6 +10,13 @@ class Parser:
 
 	t = Token()
 	la = Token()
+	Scanner = scanner.Scanner()
+	def first(self, n):
+		pass
+	def follow(self, n):
+		pass
+	def getNumber(self):
+		return int(self.t.val)
 
 	def __init__(self):
 		setattr(self.t, 'val', 'kind' )
@@ -65,3 +74,6 @@ class Parser:
 			result = self.Stat()
 		return result
 
+test = Parser()
+
+print(test.t.val)

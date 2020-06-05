@@ -13,6 +13,10 @@ def print_parser_header(parser_name):
 
     # print the header files necesary for the parser class
     output.write("#parser for " + str(parser_name) + " grammar\n\n")
+
+    # do an import for the Scanner class
+    output.write("import scanner\n\n")
+
     # class declaration
     output.write("class Parser:\n\n")
     output.write("\tclass Token(object):\n")
@@ -22,6 +26,17 @@ def print_parser_header(parser_name):
     
     output.write("\tt = Token()\n")
     output.write("\tla = Token()\n")
+    output.write("\tScanner = scanner.Scanner()\n")
+    output.write("\tdef first(self, n):\n")
+    output.write("\t\tpass\n")
+    output.write("\tdef follow(self, n):\n")
+    output.write("\t\tpass\n")
+
+    # getnumber
+    output.write("\tdef getNumber(self):\n")
+    output.write("\t\treturn int(self.t.val)\n")
+
+    # end in newline
     output.write("\n")
 
     # init method
@@ -30,6 +45,7 @@ def print_parser_header(parser_name):
     # output.write("\t\tself.la = 2\n")
     output.write("\t\tsetattr(self.t, 'val', 'kind' )\n")
     output.write("\t\tsetattr(self.la, 'val', 'kind' )\n")
+
 
     # end with a newline
     output.write("\n")

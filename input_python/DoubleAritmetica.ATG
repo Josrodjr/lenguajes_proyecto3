@@ -21,7 +21,7 @@ white = blanco{blanco}.
 PRODUCTIONS
 
 
-Expr= {Stat(white)}.
+Expr= {Stat}.
 
 Stat = 							(.value = 0.)
 	Expression<ref value>		(.print("Resultado: ", value).)

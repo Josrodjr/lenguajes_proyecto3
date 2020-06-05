@@ -32,20 +32,20 @@ whitetoken = whitespace{whitespace}
 
 PRODUCTIONS
 
-Expr= {Stat (";")}".".
+Expr= {Stat}.
 
 Stat = 							(.value=0.)
-	Expression< ref value>		(.print(value).)
+	Expression<ref value>		(.print(value).)
 	.
 
-Expression<ref result> =		(.result1=0;result2=0.)
+Expression<ref result> =		(.result1,result2=0,0.)
 	Term< ref result1>
-	{    "+"Term< ref result2>		(.result1+=result2.)
-	   | "-"Term< ref result2>		(.result1-=result2.)
+	{    "+"Term<ref result2>		(.result1+=result2.)
+	   | "-"Term<ref result2>		(.result1-=result2.)
 	}							(.result=result1.)
 	.
 
-Term<ref result>=				(.result1=1;result2=1.)
+Term<ref result>=				(.result1,result2=1,1.)
 	Factor<ref result1>
 	{    "*"Factor<ref result2>	(.result1*=result2.)
 	   | "/"Factor<ref result2>	(.result1/=result2.)
@@ -54,8 +54,8 @@ Term<ref result>=				(.result1=1;result2=1.)
 	
 Factor<ref result> =	(.signo=1.)
 	["-"(.signo = -1.)]
-	( Number<ref result> | "("Expression< ref result>")") (.result*=signo.).
+	( Number<ref result> | Expression< ref result>) (.result*=signo.).
 	
-Number<ref result> =  number (.result = self.getNumber().).
+Number<ref result> = (number) (.result = self.getNumber().).
 	.
 END Aritmetica
